@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reportes y actas de bienes · eSByE (DEMO)</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="logo">A</div>
+    <div><h1>Reportes inteligentes y actas de constatación de bienes</h1><p>Prototipo integrado · RAG sobre datos de eSByE · ESPOCH</p></div></div>
+  <div class="top-right"><span class="badge demo">DEMO · datos ficticios</span><span id="estado" class="small"></span></div>
+</header>
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-t="reporte">Reporte inteligente (RAG)</button>
+  <button class="tab" data-t="nueva">Acta de constatación</button>
+  <button class="tab" data-t="historial">Historial</button>
+  <button class="tab" data-t="matriz">Carga de datos</button>
+  <button class="tab" data-t="rag">Sistema RAG</button>
+  <button class="tab" data-t="catalogos">Analistas y coordinación</button>
+  <button class="tab" data-t="acerca">Alcance</button>
+</nav>
+<main>
+<section id="p-reporte" class="panel active">
+  <div class="gen">
+    <div class="card form">
+      <h2>1 · ¿De quién o de dónde?</h2>
+      <div class="seg"><label><input type="radio" name="amb" value="cedula" checked> Por cédula del funcionario</label>
+        <label><input type="radio" name="amb" value="ubicacion"> Por ubicación / centro</label></div>
+      <div id="amb-cedula"><label for="r-cedula">Cédula</label><input id="r-cedula" list="dl-func" placeholder="Escriba la cédula o el nombre" autocomplete="off"><datalist id="dl-func"></datalist>
+        <div id="r-cedula-info" class="muted small"></div></div>
+      <div id="amb-ubic" class="hidden"><label for="r-ubic">Ubicación</label><select id="r-ubic"></select>
+        <label for="r-cust">Custodio (opcional)</label><select id="r-cust"></select></div>
+      <h2>2 · ¿Qué reporte?</h2>
+      <select id="r-tipo"><option value="totalizado">Reporte totalizado de activos</option><option value="criticos">Bienes críticos (mal estado, baja, no ubicados)</option><option value="consulta_libre">Consulta en lenguaje natural</option></select>
+      <div id="r-preg-box" class="hidden"><label for="r-preg">Su pregunta</label><textarea id="r-preg" rows="3" placeholder="Ej.: ¿Qué bienes están en mal estado o totalmente depreciados?"></textarea></div>
+      <label for="r-corte">Matriz / documento de origen</label><select id="r-corte"></select>
+      <div class="acciones"><button class="btn primary" id="r-gen">Generar reporte</button></div>
+      <div id="r-msg" class="msg hidden"></div>
+    </div>
+    <div>
+      <div id="r-vacio" class="card"><p class="muted">Elija una cédula o una ubicación y genere el reporte. El sistema <b>calcula las cifras</b> con el programa y <b>redacta el texto con RAG</b>, citando cada bien.</p></div>
+      <div id="r-out" class="hidden">
+        <div class="card"><div class="titulo-prev"><h2 id="r-titulo"></h2><div><span id="r-badge"></span> <a class="lnk" id="r-docx" href="#">Descargar Word</a></div></div>
+          <div class="muted small" id="r-sub"></div><div class="kpis" id="r-kpis"></div><div id="r-texto" class="prose-r"></div><div id="r-val" class="small"></div></div>
+        <div class="card"><h2>Evidencias recuperadas <span class="muted small">(fragmentos que el sistema encontró en la base vectorial)</span></h2><div id="r-evid"></div></div>
+        <div class="card"><h2>Trazabilidad</h2><div id="r-traza" class="small"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="p-nueva" class="panel">
+  <div class="gen">
+    <div class="card form" id="form">
+      <h2>1 · Origen de los datos</h2>
+      <div class="seg">
+        <label><input type="radio" name="modo" value="matriz" checked> Desde la matriz de eSByE</label>
+        <label><input type="radio" name="modo" value="manual"> Ingreso manual</label>
+      </div>
+      <div id="bloque-matriz">
+        <label for="corte">Corte de la matriz</label><select id="corte"></select>
+        <label for="ubicacion">Ubicación / centro</label><select id="ubicacion"></select>
+        <label for="custodio">Custodio</label><select id="custodio"></select>
+      </div>
+      <div id="bloque-manual" class="hidden">
+        <label for="m-ubic">Ubicación / centro</label><input id="m-ubic" placeholder="Ej.: DTIC - UNIDAD DE SOPORTE Y MANTENIMIENTO">
+        <div class="row3"><div><label for="m-items">Ítems</label><input id="m-items" type="number" min="1"></div>
+          <div><label for="m-valor">Valor total ($)</label><input id="m-valor" type="number" min="0" step="0.01"></div>
+          <div><label for="m-dep">Dep. acumulada ($)</label><input id="m-dep" type="number" min="0" step="0.01"></div></div>
+      </div>
+      <h2>2 · Responsables y firmas</h2>
+      <div class="row2"><div><label for="r-titulo">Título</label><input id="r-titulo" placeholder="Ing."></div>
+        <div><label for="r-nombre">Responsable (custodio)</label><input id="r-nombre"></div></div>
+      <label for="analista">Analista de bienes y bodegas</label><select id="analista"></select>
+      <label for="coord">Coordinación</label><select id="coord"></select>
+      <div class="row2"><div><label for="fecha">Fecha del acta</label><input id="fecha" type="date"></div>
+        <div><label for="secuencia">N.° de acta <span class="muted small" id="num-aviso"></span></label><input id="secuencia" type="number" min="1" placeholder="automático"></div></div>
+      <div id="bloque-valores">
+        <label class="chk"><input type="checkbox" id="chk-manual"> Corregir manualmente valor total / depreciación acumulada</label>
+        <div id="vals-manual" class="row2 hidden"><div><label for="v-valor">Valor total ($)</label><input id="v-valor" type="number" min="0" step="0.01"></div>
+          <div><label for="v-dep">Dep. acumulada ($)</label><input id="v-dep" type="number" min="0" step="0.01"></div></div>
+      </div>
+      <h2>3 · Novedades (opcional)</h2>
+      <div id="obs"></div>
+      <button class="btn ghost" id="add-obs" type="button">+ Agregar novedad</button>
+      <label class="chk"><input type="checkbox" id="chk-norm"> Incluir base normativa de referencia en el acta</label>
+      <div class="acciones">
+        <button class="btn primary" id="emitir">Emitir acta</button>
+        <button class="btn ghost" id="borrador">Descargar borrador (Word)</button>
+      </div>
+      <div id="msg" class="msg hidden"></div>
+    </div>
+    <div>
+      <div id="avisos"></div>
+      <div id="resultado" class="card ok-card hidden"></div>
+      <div class="card"><div class="titulo-prev"><h2>Vista previa del acta</h2><span class="muted small">se actualiza al cambiar los datos</span></div>
+        <div id="preview" class="hoja"><p class="muted">Seleccione ubicación, analista y coordinación.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="p-historial" class="panel"><div class="card"><h2>Actas emitidas</h2><div id="lista-actas"></div></div><div class="card"><h2>Reportes generados</h2><div id="lista-informes"></div></div></section>
+
+<section id="p-rag" class="panel"><div class="card"><h2>Cómo trabaja el RAG en este sistema</h2><div id="rag-pipeline"></div></div>
+  <div class="cols2"><div class="card"><h2>Estado de la base vectorial</h2><div id="rag-estado"></div><div class="acciones"><button class="btn ghost" id="rag-reindex">Reindexar todo</button></div></div>
+  <div class="card"><h2>Generación del texto</h2><div id="rag-llm"></div></div></div></section>
+<section id="p-matriz" class="panel">
+  <div class="cols2">
+    <div class="card"><h2>Cargar matriz o documento de eSByE</h2>
+      <p class="muted small">Suba la exportación de eSByE (<code>.csv</code>, <code>.xlsx</code> o <code>.pdf</code> con texto). Cada carga se guarda como un <b>corte</b>; los anteriores se conservan y se compara automáticamente con el corte previo.</p>
+      <label for="arch">Archivo</label><input type="file" id="arch" accept=".csv,.xlsx,.xls,.pdf">
+      <label>¿Qué contiene el archivo?</label>
+      <div class="seg"><label><input type="radio" name="alc" value="institucional" checked> Matriz institucional</label><label><input type="radio" name="alc" value="parcial"> Documento de un funcionario (parcial)</label></div>
+      <label for="f-corte">Fecha del corte</label><input type="date" id="f-corte">
+      <div class="acciones"><button class="btn primary" id="subir">Cargar matriz</button></div>
+      <div id="res-carga"></div></div>
+    <div class="card"><h2>Cortes cargados</h2><div id="lista-cortes"></div></div>
+  </div>
+  <div class="card" style="margin-top:20px"><h2>Cambios entre cortes</h2><div id="diff"><p class="muted">Cargue un corte o seleccione uno de la lista.</p></div></div>
+</section>
+
+<section id="p-catalogos" class="panel"><div class="cols2">
+  <div class="card"><h2>Personal de la unidad</h2><div id="lista-personal"></div></div>
+  <div class="card"><h2>Agregar persona</h2>
+    <label for="p-rol">Rol</label><select id="p-rol"><option value="analista">Analista de bienes y bodegas</option><option value="coordinador">Coordinación</option></select>
+    <div class="row2"><div><label for="p-titulo">Título</label><input id="p-titulo" placeholder="Ing."></div><div><label for="p-nombre">Nombre</label><input id="p-nombre"></div></div>
+    <label for="p-cargo">Cargo (como debe constar en el acta)</label><input id="p-cargo" placeholder="analista de bienes y bodegas 1">
+    <div class="acciones"><button class="btn primary" id="p-add">Agregar</button></div>
+    <p class="muted small">Los nombres iniciales provienen del acta de ejemplo y de la conversación; verifique la ortografía y los cargos.</p></div>
+</div></section>
+
+<section id="p-acerca" class="panel"><div class="card prose" id="acerca"></div></section>
+</main>
+<script src="/static/app.js"></script>
+</body></html>

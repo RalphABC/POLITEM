@@ -1,0 +1,62 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}body{margin:0;width:1900px;font-family:"Segoe UI",Arial,sans-serif;background:#f7f5ef;color:#23303b}
+.wrap{padding:36px 50px 36px}h1{font-size:42px;margin:0;color:#8f1218}.sub{font-size:23px;color:#5b6b79;margin:4px 0 26px}
+.lane{display:grid;grid-template-columns:200px repeat(6,1fr);gap:14px;margin-bottom:14px;align-items:stretch}
+.who{border-radius:16px;padding:14px;font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff}
+.you .who{background:#8f1218}.sys .who{background:#1d7a46}
+.st{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 3px 12px rgba(30,40,50,.12);border-top:8px solid var(--c);font-size:19.5px;line-height:1.35;min-height:215px;position:relative}
+.st .k{position:absolute;top:-22px;left:12px;background:var(--c);color:#fff;border-radius:999px;width:40px;height:40px;display:grid;place-items:center;font-weight:800;font-size:22px;border:4px solid #f7f5ef}
+.st b.h{display:block;font-size:21px;margin:6px 0 4px;color:var(--c)}.st b{color:var(--c)}.st.empty{background:transparent;box-shadow:none;border:2px dashed #cfc9bb;min-height:0}
+.tag{display:inline-block;margin-top:6px;padding:2px 10px;border-radius:99px;font-size:16px;font-weight:700;background:#efeadc;color:#6b5d3a}
+.you .st{--c:#8f1218}.sys .st{--c:#1d7a46}
+.conn{display:grid;grid-template-columns:200px repeat(6,1fr);gap:14px;height:44px;color:#8a8372;font-size:28px;text-align:center;align-items:center}
+.row2{display:grid;grid-template-columns:1.05fr 1fr;gap:26px;margin-top:26px}
+.acta{background:#fff;border-radius:18px;box-shadow:0 3px 12px rgba(30,40,50,.12);padding:26px 34px;font-size:19px;line-height:1.5}
+.acta h3{text-align:center;margin:0 0 2px;font-size:20px}.acta p{margin:8px 0;text-align:justify}.acta table{margin:8px auto;border-collapse:collapse;width:70%}.acta td{border:1px solid #444;padding:4px 10px}.acta td:last-child{text-align:right}
+.y{background:#fff0a8;padding:0 4px;border-radius:4px}.g{background:#c9f0d8;padding:0 4px;border-radius:4px}
+.sig{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;margin-top:20px;font-size:16px}
+.cmp{background:#fff;border-radius:18px;box-shadow:0 3px 12px rgba(30,40,50,.12);padding:22px 28px;font-size:21px}
+.cmp table{width:100%;border-collapse:collapse}.cmp th{font-size:19px;text-align:left;padding:6px 8px;border-bottom:2px solid #d9d3c4}.cmp td{padding:8px;border-bottom:1px solid #eee9dc;vertical-align:top;font-size:19.5px}
+.leg{margin-top:12px;font-size:19px}
+</style></head><body><div class="wrap">
+<h1>Cómo trabajaría la analista con el sistema: de la matriz al acta</h1>
+<div class="sub">Lo que usted hace sigue siendo suyo (elegir, registrar novedades, revisar y firmar). El sistema se encarga de <b>buscar, sumar, redactar y armar los documentos</b>.</div>
+
+<div class="lane you"><div class="who">Usted<br><small style="font-weight:400;font-size:18px">analista de bienes y bodegas</small></div>
+ <div class="st"><div class="k">1</div><b class="h">Descarga la matriz</b>Baja de eSByE el reporte de bienes.<br><span class="tag">una vez al mes</span></div>
+ <div class="st"><div class="k">2</div><b class="h">La sube al sistema</b>Arrastra el archivo (Excel, CSV o PDF) y marca si es de toda la institución o de un funcionario.</div>
+ <div class="st empty"></div>
+ <div class="st"><div class="k">4</div><b class="h">Elige los datos del acta</b>Ubicación o centro, custodio, analista y coordinación, y la fecha.<br><span class="tag">por cada acta</span></div>
+ <div class="st"><div class="k">6</div><b class="h">Registra novedades</b>Bien faltante, mal estado, sobrante… escribiendo solo el código y una nota breve.</div>
+ <div class="st"><div class="k">8</div><b class="h">Revisa, imprime y firma</b>Ajusta el Word si hace falta y recoge las firmas de custodio, analista y coordinación.<br><span class="tag">fuera del sistema</span></div>
+</div>
+<div class="conn" style="display:block;text-align:center;height:46px;line-height:46px;font-size:21px;color:#6b5d3a"><b>Siga los números del 1 al 9</b> · primero la carga mensual (1-3) y luego, por cada acta, los pasos 4 al 9</div>
+<div class="lane sys"><div class="who">El sistema</div>
+ <div class="st empty"></div>
+ <div class="st empty"></div>
+ <div class="st"><div class="k">3</div><b class="h">Lee y ordena</b>Guarda la matriz como un «corte» del mes y le muestra qué cambió: <b>ingresos, bajas y traspasos</b>.</div>
+ <div class="st"><div class="k">5</div><b class="h">Calcula y arma el acta</b>Cuenta los ítems y suma el <b>valor total</b> y la <b>depreciación acumulada</b>. Escribe el texto con el modelo único y pone las firmas.</div>
+ <div class="st"><div class="k">7</div><b class="h">Redacta las novedades</b>Las escribe de forma uniforme y sugiere la <b>norma</b> que corresponde, buscándola en su biblioteca de normativa.</div>
+ <div class="st"><div class="k">9</div><b class="h">Entrega los archivos</b><b>Acta en Word</b> + <b>anexo en Excel</b> con la lista de bienes verificados. Guarda el acta con su número.</div>
+</div>
+
+<div class="row2">
+ <div class="acta"><div style="font-weight:800;margin-bottom:6px;font-size:21px">Así queda el acta: qué elige usted y qué sale solo</div>
+  <h3>ACTA DE CONSTATACIÓN FÍSICA DE BIENES <span class="y">DTIC - UNIDAD DE SOPORTE Y MANTENIMIENTO</span></h3><h3>ACTA N.° <span class="g">524-2026</span></h3>
+  <p>En la ciudad de Riobamba a los <span class="y">16 días del mes de julio de 2026</span>, en cumplimiento a la disposición de trabajo y contando con la presencia de <span class="y">ING. MARCELO VELASCO</span> en calidad de responsable de la ubicación…, y de <span class="y">Ing. Andrea Adriance, analista de bienes y bodegas 1</span>, se procede a realizar la constatación física de los bienes…</p>
+  <table><tr><td>Ítems…</td><td><span class="g">44</span></td></tr><tr><td>Valor Total</td><td><span class="g">$ 19.443,77</span></td></tr><tr><td>Depreciación acumulada</td><td><span class="g">$ 14.372,76</span></td></tr></table>
+  <p><span class="g">Como documento adjunto se encuentra la matriz descargada del sistema esByE…</span></p>
+  <p>Novedades: <span class="y">«El bien ESP-000123 no se encuentra…» (usted registra el código)</span> → redactado por el sistema.</p>
+  <div class="sig"><span class="g">Custodio</span><span class="g">Analista de Bienes y Bodegas 1</span><span class="g">Coordinadora de Bienes y Bodegas</span></div>
+  <div class="leg"><span class="y">amarillo = usted lo elige o escribe</span> &nbsp; <span class="g">verde = sale solo</span></div></div>
+ <div class="cmp"><div style="font-weight:800;margin-bottom:8px;font-size:21px">¿Qué cambia respecto a hacerlo a mano?</div>
+  <table><tr><th></th><th>Hoy (según lo conversado)</th><th>Con el sistema</th></tr>
+  <tr><td><b>Redacción</b></td><td>Cada analista escribe o modifica su acta</td><td>Un solo modelo para todos, listo para aprobación</td></tr>
+  <tr><td><b>Cifras</b></td><td>Se calculan y se copian a mano</td><td>Salen de la matriz; usted puede corregirlas</td></tr>
+  <tr><td><b>Matriz del mes</b></td><td>Se descarga y se archiva aparte</td><td>Se guarda por mes y muestra los cambios</td></tr>
+  <tr><td><b>Novedades</b></td><td>Se redactan libremente</td><td>Misma redacción y norma sugerida</td></tr>
+  <tr><td><b>Número de acta</b></td><td>A confirmar con la Unidad</td><td>Consecutivo, sin repetir</td></tr>
+  <tr><td><b>Firma</b></td><td>Física</td><td>Igual (el sistema no firma)</td></tr></table>
+  <div class="leg" style="margin-top:14px;background:#fff6dc;padding:10px 14px;border-radius:10px"><b>Importante:</b> el sistema no se conecta solo a eSByE; usted sube la matriz una vez al mes. Todo lo que el sistema escribe se puede revisar y corregir antes de imprimir.</div></div>
+</div>
+</div></body></html>

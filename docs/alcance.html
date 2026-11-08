@@ -1,0 +1,108 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Alcance, limitaciones y requerimientos — Demo integrado</title>
+<style>
+@page{size:A4;margin:16mm 15mm}@page diag{size:A4 landscape;margin:8mm}
+body{font-family:Arial,Helvetica,sans-serif;font-size:10pt;line-height:1.4;color:#1b2733}
+h1{font-size:20pt;margin:0 0 4px;color:#7d0f14}h2{font-size:13.5pt;color:#7d0f14;border-bottom:2px solid #00873f;padding-bottom:3px;margin-top:17px;page-break-after:avoid}
+h3{font-size:11pt;margin:14px 0 4px;page-break-after:avoid}p{margin:5px 0;text-align:justify}.sub{color:#66758a;margin-bottom:10px}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:9pt}tr{page-break-inside:avoid}th{background:#1b2733;color:#fff;text-align:left;padding:5px 7px}
+td{border-bottom:1px solid #d5dce3;padding:5px 7px;vertical-align:top}
+.tag{display:inline-block;padding:1px 8px;border-radius:99px;font-weight:700;font-size:8.2pt;white-space:nowrap}.ok{background:#e1f3e8;color:#14683a}.par{background:#fff0cf;color:#8a5200}.no{background:#fde2df;color:#a3231b}
+.box{background:#f4f6f8;border-left:4px solid #00873f;padding:8px 12px;margin:10px 0}.warn{border-left-color:#d99000;background:#fff8e8}
+ul,ol{margin:4px 0 4px 18px;padding:0}li{margin:2px 0}
+.diag{page:diag;page-break-before:always;page-break-after:always}.diag img{width:100%;max-height:176mm;object-fit:contain;display:block}.diag .t{font-weight:700;font-size:11pt;margin:0 0 3px;color:#7d0f14}
+.cap{font-size:8.5pt;color:#66758a;text-align:center}.pie{color:#66758a;font-size:8pt;margin-top:10px}
+img.cap1{width:80%;display:block;margin:6px auto;border:1px solid #d5dce3}
+</style></head><body>
+<h1>Alcance, limitaciones y requerimientos</h1>
+<div class="sub">Demo integrado «Reportes inteligentes (RAG) y actas de constatación» · ESPOCH · datos de eSByE · 23 de octubre de 2026 · Reemplaza al documento anterior (demo de actas)</div>
+
+<h2>1. Qué se pidió y cómo se concilió</h2>
+<p><b>Tutor (Ing. Braulio).</b> El sistema eSByE entrega documentos con los bienes registrados a nombre de una persona, que se buscan por la <b>cédula</b>. La entrada sería ese documento (<b>PDF o CSV</b>); a partir de él se <b>cuantifican</b> los datos y se genera un <b>reporte totalizado de los activos existentes</b>. Para ese reporte <b>sí se emplearía RAG</b>: carga y segmentación de la documentación, incrustaciones (<i>embeddings</i>) y base vectorial.</p>
+<p><b>Unidad de Bienes y Bodegas (ingeniera).</b> Que el <b>acta de constatación física</b> salga por defecto, con un solo modelo y con un clic, desde la matriz de eSByE (que cambia cada mes): el analista elige ubicación o centro, custodio y analista, registra las observaciones (bien faltante, mal estado…) y obtiene el acta con valor total, depreciación acumulada y firmas; también acepta el ingreso manual de los valores.</p>
+<div class="box"><b>Cómo se concilian.</b> Ambos parten de datos exportados de eSByE y necesitan los mismos totales (ítems, valor contable, depreciación acumulada). El demo integrado ofrece <b>dos salidas sobre los mismos datos</b>: (a) el <b>reporte totalizado</b> redactado con RAG, por cédula o por ubicación, y (b) el <b>acta de constatación</b>, cuyas cifras y texto fijo los genera el programa y cuyo componente RAG recupera la norma aplicable y redacta las novedades. <b>El RAG es obligatorio y está presente en ambos flujos</b>, pero las cifras nunca las genera el modelo.</div>
+
+<h2>2. Qué entrega el demo integrado</h2>
+<table><tr><th style="width:26%">Requerimiento</th><th style="width:9%">Origen</th><th style="width:13%">Estado</th><th>Cómo está resuelto / qué falta</th></tr>
+<tr><td>Entrada por documento de eSByE, buscado por cédula</td><td>Tutor</td><td><span class="tag ok">Implementado</span></td><td>Carga de CSV, Excel y PDF; el reporte se pide por cédula (con lista de funcionarios) o por ubicación. El documento de una persona se carga como «parcial».</td></tr>
+<tr><td>Entrada en PDF</td><td>Tutor</td><td><span class="tag par">Parcial</span></td><td>Lee PDF con <b>texto seleccionable</b> y tablas (pdfplumber), y toma cédula y custodio de la cabecera. Probado solo con un PDF de ejemplo propio; el diseño real de eSByE no se verificó. No hay OCR (PDF escaneado).</td></tr>
+<tr><td>Cuantificar los datos (totales)</td><td>Ambos</td><td><span class="tag ok">Implementado</span></td><td>Cálculo determinista: ítems, valor contable, depreciación acumulada, valor en libros, por estado, críticos y totalmente depreciados.</td></tr>
+<tr><td>Reporte totalizado con RAG</td><td>Tutor</td><td><span class="tag ok">Implementado</span></td><td>Recuperación híbrida, texto con citas por bien, evidencias visibles, validación y respaldo. Consulta en lenguaje natural incluida.</td></tr>
+<tr><td>Carga y segmentación</td><td>Tutor</td><td><span class="tag ok">Implementado</span></td><td>Un fragmento por bien (sin nombre del custodio) y uno por sección de normativa, con metadatos.</td></tr>
+<tr><td>Incrustaciones y base vectorial</td><td>Tutor</td><td><span class="tag par">Parcial</span></td><td><b>ChromaDB</b> persistente (con respaldo en memoria). Los embeddings por defecto son <b>léxicos</b> (n-gramas); los <b>semánticos</b> requieren Ollama y no se probaron con un modelo real.</td></tr>
+<tr><td>Acta de constatación por defecto, modelo único</td><td>Ingeniera</td><td><span class="tag ok">Implementado</span></td><td>Texto y estructura fijos que reproducen el acta de ejemplo (N.° 524-2026). El modelo definitivo debe validarlo la Unidad.</td></tr>
+<tr><td>Elegir ubicación, custodio, analista; firmas</td><td>Ingeniera</td><td><span class="tag ok">Implementado</span></td><td>Listas desde la matriz y el catálogo de personal.</td></tr>
+<tr><td>Matriz actualizada cada mes</td><td>Ingeniera</td><td><span class="tag par">Parcial</span></td><td>Cortes mensuales con comparación (altas, bajas, traspasos). La carga es <b>manual</b>.</td></tr>
+<tr><td>Valor total y depreciación (también manual)</td><td>Ingeniera</td><td><span class="tag ok">Implementado</span></td><td>De la matriz, corregibles o en modo manual, con aviso de diferencias.</td></tr>
+<tr><td>Observaciones del analista</td><td>Ingeniera</td><td><span class="tag ok">Implementado</span></td><td>Seis tipos de novedad, redacción uniforme y norma sugerida recuperada con el mismo RAG.</td></tr>
+<tr><td>Anexo con la matriz verificada</td><td>Ingeniera</td><td><span class="tag ok">Implementado</span></td><td>Excel con bienes, totales con fórmulas y novedades.</td></tr>
+<tr><td>Obtener la matriz automáticamente de eSByE</td><td>Ingeniera</td><td><span class="tag no">No incluido</span></td><td>Ver sección 4.1.</td></tr>
+<tr><td>Firma electrónica, inicio de sesión, auditoría</td><td>Producción</td><td><span class="tag no">No incluido</span></td><td>Ver sección 4.5.</td></tr></table>
+<img class="cap1" src="capturas/01_reporte_cedula.png"><div class="cap">Figura 1. Reporte inteligente por cédula: cifras verificadas, texto con citas, evidencias y trazabilidad.</div>
+
+<div class="diag"><div class="t">Diagrama A · Para cualquier persona, sin conocimientos de informática</div><img src="diagramas/d1_sin_conocimientos.png"></div>
+<div class="diag"><div class="t">Diagrama B · Para un ingeniero en sistemas</div><img src="diagramas/d2_ingeniero_sistemas.png"></div>
+<div class="diag"><div class="t">Diagrama C · Para la ingeniera de la Unidad de Bienes y Bodegas</div><img src="diagramas/d3_ingeniera_bienes.png"></div>
+
+<h2>3. Cómo cumple el RAG (y dónde no se usa)</h2>
+<table><tr><th style="width:26%">Etapa de RAG</th><th>En este sistema</th></tr>
+<tr><td>Carga y segmentación</td><td>Importación de CSV/Excel/PDF a SQLite; un fragmento por bien y por sección de norma.</td></tr>
+<tr><td>Incrustaciones</td><td>Hashing de n-gramas (por defecto) u Ollama <i>nomic-embed-text</i>.</td></tr>
+<tr><td>Base vectorial</td><td>ChromaDB persistente, con filtros por metadatos (corte, cédula, ubicación, tipo).</td></tr>
+<tr><td>Recuperación</td><td>Filtro obligatorio por ámbito + similitud + reglas de negocio; los bienes críticos siempre entran al contexto.</td></tr>
+<tr><td>Generación</td><td>Plantilla determinista (por defecto), Ollama, Anthropic u OpenAI-compatible.</td></tr>
+<tr><td>Validación</td><td>Citas existentes, cifras iguales a las calculadas, críticos mencionados; reintento y respaldo.</td></tr></table>
+<p><b>Dónde no interviene el RAG:</b> el cálculo de totales y el texto fijo del acta (deben ser exactos y repetibles). Es una decisión de diseño, no una carencia.</p>
+
+<h2>4. Lo que no se pudo implementar o necesita insumos externos</h2>
+<h3>4.1 Obtención automática de la matriz desde eSByE</h3>
+<p>No tuve acceso a eSByE (exige credenciales institucionales) y no encontré documentación pública de una API o de exportaciones programadas: el manual del módulo de Bienes describe reportes descargables en PDF, Excel o CSV. Opciones: <b>A.</b> carga manual mensual (hecha); <b>B.</b> carpeta vigilada que importe archivos nuevos (fácil, pendiente); <b>C.</b> acceso a datos mediante el MEF o la DTIC (requiere convenio; no puedo afirmar que exista); <b>D.</b> automatizar el navegador sobre eSByE (no recomendado: frágil, requiere guardar credenciales y puede contravenir condiciones de uso).</p>
+<h3>4.2 Formato real de la matriz y de los documentos por cédula</h3>
+<p>Las columnas del demo se tomaron de los campos que el manual público menciona como filtros del reporte «Institucional Bienes por Sector»; el manual <b>no enumera las columnas</b> de las exportaciones. <b>Se necesita</b> una matriz real y un documento real por cédula (CSV y, si el tutor insiste, PDF) para ajustar los alias, tipos, formatos numéricos y la forma en que viene la ubicación y la cabecera con la cédula.</p>
+<h3>4.3 Modelo oficial del acta y normativa</h3>
+<p>El demo replica el ejemplo recibido. Falta confirmar encabezado oficial, copias, si el acta es por ubicación o por custodio, y la numeración oficial. La normativa es un resumen de apoyo (basado en el Acuerdo 067-CG-2018); se requieren los textos vigentes del reglamento de bienes, de la Contraloría y del reglamento interno de la ESPOCH, con artículos exactos.</p>
+<h3>4.4 Calidad del RAG con modelos reales</h3>
+<p>Ollama, Anthropic y OpenAI se probaron únicamente con respuestas simuladas. No se midió la calidad de redacción ni de recuperación con un conjunto de preguntas de referencia (p. ej., RAGAS). Con los embeddings por defecto, la búsqueda coincide por palabras parecidas, no por significado. <b>Se necesita</b> un equipo con Ollama (≈ 16 GB de RAM) o una clave de API autorizada para evaluarlo, y un conjunto de consultas reales de los usuarios.</p>
+<h3>4.5 Seguridad, usuarios y datos personales</h3>
+<ul><li>Falta <b>inicio de sesión institucional</b>, <b>roles</b> (analista, coordinación, administrador) y <b>bitácora de auditoría</b>; cualquier usuario del demo puede consultar cualquier cédula.</li>
+<li>Las cédulas y nombres son datos personales (LOPDP): alojar en infraestructura de la ESPOCH. Los fragmentos vectoriales no llevan el nombre del custodio, pero la cédula figura en los metadatos de la base vectorial.</li>
+<li>No hay <b>firma electrónica</b> ni archivo del acta firmada. SQLite y ChromaDB locales sirven para un usuario; varios analistas simultáneos requieren PostgreSQL y un servicio de base vectorial.</li></ul>
+<h3>4.6 Datos que solo la Unidad puede confirmar</h3>
+<ul><li>Lista oficial de analistas, cargos y coordinación (los nombres sembrados salen del acta y del audio; verificar ortografía).</li>
+<li>Relación ubicación → responsable y lista oficial de centros.</li>
+<li>Fuente de verdad contable cuando el analista ingresa valores a mano, y relación con la <b>Toma Física</b> de eSByE.</li></ul>
+
+<h2>5. Lo verificado y lo no verificado sobre eSByE</h2>
+<table><tr><th style="width:50%">Verificado (manuales públicos)</th><th>No verificado</th></tr><tr><td><ul><li>El módulo de Bienes ofrece 13 reportes en PDF, Excel, CSV o CSV (Excel).</li><li>«Por Custodios» filtra por cédula/RUC, bodega, tipo de registro y fechas.</li><li>«Institucional Bienes por Sector» admite filtros por custodio, bodega, sector, estado, valor contable, depreciación acumulada, valor en libros y vida útil.</li><li>«Impresión Masiva» incluye Toma Física y Depreciación.</li></ul></td><td><ul><li>Columnas exactas de cada exportación y diseño del PDF.</li><li>Existencia de API o exportación programada.</li><li>Cómo se registra la ubicación del bien.</li><li>Permisos de cada rol para descargar reportes.</li></ul></td></tr></table>
+
+<h2>6. Supuestos del demo</h2>
+<ul><li>Datos ficticios (463 bienes, 12 ubicaciones, 3 cortes); la depreciación se simuló de forma lineal con 10 % de valor residual solo para poblar el ejemplo.</li>
+<li>Una ubicación equivale al campo «Nombre Bodega»; un bien es «crítico» si está en estado Malo o su condición indica baja, no ubicado o reparación; «totalmente depreciado» si el valor en libros ≤ 10 % del valor contable.</li>
+<li>El «Valor Total» del acta es la suma del valor contable; la depreciación es la suma de la depreciación acumulada de los bienes incluidos.</li>
+<li>Un documento de una sola persona se carga como «parcial» y no se compara con otros cortes.</li></ul>
+
+<h2>7. Equipo requerido</h2>
+<table><tr><th></th><th>Demo (un analista)</th><th>Producción institucional (sugerido)</th></tr>
+<tr><td>CPU / RAM</td><td>2–4 núcleos · 4 GB (8 GB con ChromaDB)</td><td>4 núcleos · 8 GB; 16 GB si hay modelo local</td></tr>
+<tr><td>Disco</td><td>2 GB (dependencias + índice)</td><td>30 GB SSD + respaldos</td></tr>
+<tr><td>Software</td><td>Windows 10/11, Python 3.10+, navegador actual</td><td>Servidor con PostgreSQL, base vectorial, proxy HTTPS y autenticación institucional</td></tr>
+<tr><td>Modelos (opcional)</td><td>No requeridos (modo plantilla)</td><td>Ollama con llama3.1:8b y nomic-embed-text; GPU opcional</td></tr></table>
+<p class="sub">Estimaciones; no consulté las especificaciones de su equipo ni de los servidores de la ESPOCH.</p>
+
+<h2>8. Riesgos y mitigación</h2>
+<table><tr><th style="width:34%">Riesgo</th><th>Mitigación</th></tr>
+<tr><td>El PDF real de eSByE no se lee bien</td><td>Preferir Excel/CSV (eSByE los exporta); ajustar el lector con un PDF real.</td></tr>
+<tr><td>La matriz real tiene otras columnas</td><td>Diccionario de alias; informe de columnas sin usar y filas rechazadas.</td></tr>
+<tr><td>El modelo inventa un dato</td><td>Cifras por código, citas validadas, reintento y respaldo determinista.</td></tr>
+<tr><td>Se mezclan bienes de distintos custodios</td><td>Filtro por cédula/ubicación antes de la búsqueda vectorial (probado).</td></tr>
+<tr><td>Datos personales expuestos</td><td>Alojamiento interno, control de acceso (pendiente), sin nombres en fragmentos ni envíos a la nube.</td></tr>
+<tr><td>Texto del acta no alineado con la normativa vigente</td><td>Validación del modelo de acta por la Unidad y carga de normativa oficial.</td></tr></table>
+
+<h2>9. Preguntas abiertas</h2>
+<p><b>Para el tutor:</b></p><ol><li>¿Acepta el acta de constatación como forma concreta del «reporte totalizado»?</li><li>¿El PDF es obligatorio o basta CSV/Excel, que es lo que eSByE exporta?</li><li>¿Qué base vectorial y qué modelos prefiere para la tesis (Chroma, FAISS, pgvector; Ollama u otro)?</li><li>¿Cómo se evaluará el RAG (métricas, conjunto de preguntas)?</li></ol>
+<p><b>Para la Unidad de Bienes y Bodegas:</b></p><ol><li>¿Puede facilitar una matriz real y un documento real por cédula (anonimizados)?</li><li>¿El acta es por ubicación, por custodio o ambos? ¿Quién es el responsable cuando hay varios custodios?</li><li>¿Cuál es el modelo oficial del acta y la numeración a continuar?</li><li>¿Qué normas deben citarse y con qué artículos?</li><li>¿Cómo se firma y archiva el acta hoy?</li><li>¿Existe autorización para explorar con el MEF una vía de acceso automático a los datos?</li></ol>
+
+<h2>10. Relación con el anteproyecto y siguientes pasos</h2>
+<p>Este demo es independiente de los dos anteriores y <b>no modifica</b> el anteproyecto entregado. Si se adopta, habría que ajustar el problema (4.1), los requisitos funcionales (carga mensual por cortes, reporte por cédula y por ubicación, acta, anexo, novedades), el alcance, la arquitectura (base vectorial formal) y el temario.</p>
+<p><b>Siguientes pasos sugeridos:</b> (1) confirmar con el tutor y la Unidad el alcance conjunto; (2) probar con una matriz y un PDF reales; (3) evaluar el RAG con Ollama y un conjunto de consultas reales; (4) decidir entre carga manual o carpeta vigilada; (5) definir autenticación, roles y auditoría; (6) cargar la normativa oficial; (7) piloto con un analista durante un mes.</p>
+<div class="pie">Fuentes consultadas: manual de usuario para generar reportes en el módulo de Bienes de eSByE (ebye.finanzas.gob.ec) y manual para manejo de reportes en el eSByE (finanzas.gob.ec). Acta de ejemplo, audio y mensajes del tutor proporcionados por el usuario.</div>
+</body></html>

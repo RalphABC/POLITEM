@@ -1,0 +1,59 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}body{margin:0;width:1800px;font-family:"Segoe UI",Arial,sans-serif;background:#fbf8f2;color:#23303b}
+.wrap{padding:44px 60px 40px}h1{font-size:46px;margin:0 0 6px;color:#8f1218}.sub{font-size:25px;color:#5b6b79;margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:46px 64px;position:relative}
+.card{background:#fff;border-radius:24px;box-shadow:0 4px 18px rgba(30,40,50,.12);padding:26px 28px 24px;position:relative;border-top:10px solid var(--c)}
+.n{position:absolute;top:-30px;left:24px;width:58px;height:58px;border-radius:50%;background:var(--c);color:#fff;font-weight:800;font-size:32px;display:grid;place-items:center;border:5px solid #fbf8f2}
+.card svg{display:block;margin:6px auto 10px;height:150px}
+.card h2{font-size:29px;margin:4px 0 8px;text-align:center}.card p{font-size:23px;line-height:1.38;margin:0;text-align:center;color:#34424e}
+.card .eg{margin-top:12px;background:#f4f1ea;border-radius:12px;padding:8px 12px;font-size:20px;color:#5b6b79;text-align:center}
+.ar{position:absolute;font-size:56px;color:#b9b2a3;font-weight:700}
+.final{margin-top:40px;background:#1b2733;color:#fff;border-radius:24px;padding:26px 36px;display:flex;gap:34px;align-items:center}
+.final b{color:#7ee2a8}.final .t{font-size:29px;line-height:1.4}.final .s{font-size:23px;color:#c9d3db;margin-top:6px}
+</style></head><body><div class="wrap">
+<h1>¿Cómo funciona el sistema? Explicado sin tecnicismos</h1>
+<div class="sub">Imagine una oficina que debe saber <b>qué objetos tiene la universidad, quién los cuida y cuánto valen</b>, y escribir informes sobre eso.</div>
+<div class="grid">
+
+<div class="card" style="--c:#8f1218"><div class="n">1</div>
+<svg viewBox="0 0 200 150"><rect x="38" y="14" width="124" height="124" rx="10" fill="#8f1218"/><rect x="48" y="14" width="114" height="124" rx="8" fill="#fff" stroke="#8f1218" stroke-width="4"/>
+<g stroke="#9aa7b2" stroke-width="5" stroke-linecap="round"><line x1="66" y1="42" x2="146" y2="42"/><line x1="66" y1="62" x2="146" y2="62"/><line x1="66" y1="82" x2="146" y2="82"/><line x1="66" y1="102" x2="120" y2="102"/></g>
+<rect x="26" y="26" width="16" height="22" rx="4" fill="#d9aa2b"/><rect x="26" y="60" width="16" height="22" rx="4" fill="#d9aa2b"/><rect x="26" y="94" width="16" height="22" rx="4" fill="#d9aa2b"/></svg>
+<h2>El gran cuaderno del Estado</h2><p>Se llama <b>eSByE</b>. Ahí se anota cada silla, computadora o escritorio de la universidad y <b>a quién se lo entregaron</b>.</p>
+<div class="eg">Ej.: «Computadora, $ 900, a cargo del Ing. Pérez»</div></div>
+
+<div class="card" style="--c:#c77700"><div class="n">2</div>
+<svg viewBox="0 0 200 150"><rect x="30" y="22" width="92" height="116" rx="8" fill="#fff" stroke="#c77700" stroke-width="5"/><g stroke="#c9d1d8" stroke-width="5" stroke-linecap="round"><line x1="46" y1="52" x2="106" y2="52"/><line x1="46" y1="72" x2="106" y2="72"/><line x1="46" y1="92" x2="106" y2="92"/></g>
+<path d="M132 80 h40 m-14 -16 l16 16 l-16 16" fill="none" stroke="#c77700" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<h2>Se saca una copia de la lista</h2><p>Una persona <b>descarga del cuaderno una hoja</b> con la lista de objetos (de una persona o de toda una oficina) y la entrega al sistema.</p>
+<div class="eg">Es una hoja de cálculo o un PDF</div></div>
+
+<div class="card" style="--c:#1d7a46"><div class="n">3</div>
+<svg viewBox="0 0 200 150"><g stroke="#1d7a46" stroke-width="4" fill="#fff"><rect x="26" y="22" width="110" height="72" rx="7" transform="rotate(-8 80 60)"/><rect x="42" y="34" width="110" height="72" rx="7" transform="rotate(-2 90 70)"/><rect x="58" y="50" width="116" height="78" rx="7"/></g>
+<g stroke="#9aa7b2" stroke-width="5" stroke-linecap="round"><line x1="76" y1="74" x2="150" y2="74"/><line x1="76" y1="94" x2="136" y2="94"/></g><circle cx="74" cy="62" r="6" fill="#1d7a46"/></svg>
+<h2>El programa hace una ficha por objeto</h2><p>Lee la lista y escribe <b>una fichita por cada objeto</b>: qué es, dónde está, en qué estado y cuánto vale. Las ordena en un fichero que entiende rápido.</p>
+<div class="eg">Fichero = «memoria» del sistema</div></div>
+
+<div class="card" style="--c:#1f6fb2"><div class="n">4</div>
+<svg viewBox="0 0 200 150"><g stroke="#1f6fb2" stroke-width="4" fill="#fff"><rect x="24" y="34" width="86" height="58" rx="6"/><rect x="34" y="46" width="86" height="58" rx="6"/></g>
+<circle cx="132" cy="62" r="34" fill="#e4f0fa" stroke="#1f6fb2" stroke-width="9"/><line x1="156" y1="88" x2="186" y2="122" stroke="#1f6fb2" stroke-width="13" stroke-linecap="round"/></svg>
+<h2>Cuando alguien pregunta, busca solo lo suyo</h2><p>Si piden el informe de una persona, <b>separa únicamente las fichas de esa persona</b> (por su cédula) o de esa oficina. Nunca mezcla las de otros.</p>
+<div class="eg">«¿Qué tiene la cédula 99…?»</div></div>
+
+<div class="card" style="--c:#7b3fa0"><div class="n">5</div>
+<svg viewBox="0 0 200 150"><rect x="22" y="20" width="84" height="112" rx="12" fill="#fff" stroke="#7b3fa0" stroke-width="5"/><rect x="34" y="32" width="60" height="26" rx="5" fill="#e9dcf3"/>
+<g fill="#7b3fa0"><circle cx="44" cy="78" r="7"/><circle cx="64" cy="78" r="7"/><circle cx="84" cy="78" r="7"/><circle cx="44" cy="100" r="7"/><circle cx="64" cy="100" r="7"/><circle cx="84" cy="100" r="7"/></g>
+<path d="M120 112 l12 -62 l18 -10 l12 14 l-14 14 z" fill="#d9aa2b" stroke="#7b3fa0" stroke-width="4" stroke-linejoin="round"/><path d="M120 112 l-6 14 l16 -6 z" fill="#7b3fa0"/></svg>
+<h2>Una calculadora suma y un redactor escribe</h2><p><b>La calculadora hace las cuentas</b> (así no hay errores). Luego un <b>redactor</b> escribe el informe y <b>anota de qué ficha sacó cada dato</b>.</p>
+<div class="eg">«Computadora [ESP-000123] en mal estado»</div></div>
+
+<div class="card" style="--c:#b3261e"><div class="n">6</div>
+<svg viewBox="0 0 200 150"><path d="M100 10 L168 34 V78 C168 108 138 128 100 142 C62 128 32 108 32 78 V34 Z" fill="#fff" stroke="#b3261e" stroke-width="7"/><path d="M68 78 l24 24 l42 -48" fill="none" stroke="#1d7a46" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<h2>Un revisor comprueba que nada esté inventado</h2><p>Antes de mostrar el informe, <b>verifica que cada ficha citada exista</b> y que los números coincidan con los de la calculadora. Si algo no cuadra, lo corrige.</p>
+<div class="eg">Si falla, usa un texto de respaldo</div></div>
+
+</div>
+<div class="final"><svg width="110" height="110" viewBox="0 0 120 120"><rect x="22" y="8" width="76" height="104" rx="8" fill="#fff"/><g stroke="#9aa7b2" stroke-width="5" stroke-linecap="round"><line x1="36" y1="34" x2="84" y2="34"/><line x1="36" y1="52" x2="84" y2="52"/><line x1="36" y1="70" x2="68" y2="70"/></g><path d="M40 92 q10 -14 20 0 t20 0" fill="none" stroke="#1d7a46" stroke-width="5" stroke-linecap="round"/></svg>
+<div><div class="t"><b>Resultado:</b> un <b>informe</b> o un <b>acta de revisión de bienes</b> ya redactado, con las cantidades y los valores correctos, listo para que una persona lo revise, lo imprima y lo firme.</div>
+<div class="s">Las personas siguen decidiendo y firmando: el sistema solo ahorra el trabajo de buscar, sumar y redactar.</div></div></div>
+</div></body></html>

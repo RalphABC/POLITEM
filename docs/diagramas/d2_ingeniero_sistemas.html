@@ -1,0 +1,131 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}body{margin:0;width:2000px;height:1330px;position:relative;font-family:"Segoe UI",Arial,sans-serif;background:#f6f8fa;color:#1b2733}
+.box{position:absolute;background:#fff;border:3px solid var(--c);border-radius:12px;padding:8px 12px;box-shadow:0 2px 8px rgba(0,0,0,.1);overflow:hidden}
+.box b{display:block;font-size:19px;color:var(--c);margin-bottom:3px}.box pre{margin:0;font:15px/1.3 "Segoe UI",Arial,sans-serif;white-space:pre-wrap;color:#34424e}
+.num{position:absolute;top:-1px;right:-1px;background:var(--c);color:#fff;font-weight:800;font-size:18px;width:32px;height:32px;border-radius:0 9px 0 12px;display:grid;place-items:center}
+.band{position:absolute;left:20px;right:20px;border-radius:16px;border:2px dashed #b8c2cc;background:rgba(255,255,255,.55)}
+.bl{position:absolute;left:34px;font-weight:800;font-size:21px;letter-spacing:.4px}
+h1{position:absolute;left:40px;top:18px;margin:0;font-size:36px;color:#1b2733}.sub{position:absolute;left:42px;top:66px;font-size:19px;color:#5b6b79}
+.lg{position:absolute;font-size:16px;line-height:1.35}svg{position:absolute;left:0;top:0}.lbl{font:600 14px "Segoe UI",Arial;fill:#55616d}
+</style></head><body>
+<h1>Arquitectura del sistema: carga, RAG y acta de constatación</h1>
+<div class="sub">Python · FastAPI · SQLite · ChromaDB · embeddings (hash | Ollama) · LLM por Strategy · python-docx / openpyxl · SPA sin dependencias</div>
+<div class="band" style="top:112px;height:285px"></div><div class="bl" style="top:118px;color:#1f6fb2;left:1500px;text-align:right;width:420px;display:none"></div>
+<div class="band" style="top:420px;height:315px"></div><div class="band" style="top:760px;height:260px"></div>
+<svg width="2000" height="1330"><defs><marker id="m0" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#55616d"/></marker><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3261e"/></marker><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d7a46"/></marker></defs>
+<path d="M260,230.0 H310" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M620,230.0 H670" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M920,230.0 H970" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1270,230.0 H1320" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1620,230.0 H1670" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M795.0,300 V322" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M270,555.0 H310" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M520,555.0 H540.0 V517.5 H560" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M685.0,575 V595" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M810,657.5 H830.0 V585.0 H850" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1160,585.0 H1180.0 V517.5 H1200" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1335.0,575 V595" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1470,657.5 H1495.0 V517.5 H1520" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1655.0,575 V595" fill="none" stroke="#b3261e" stroke-width="3"  marker-end="url(#m1)"/>
+<path d="M1790,517.5 H1810.0 V585.0 H1830" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1790,652.5 H1810.0 V585.0 H1830" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M270,910.0 H310" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M630,910.0 H660.0 V871.0 H690" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M630,910.0 H660.0 V969.0 H690" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M980,871.0 H1010.0 V910.0 H1040" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M980,969.0 H1010.0 V910.0 H1040" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1340,910.0 H1400" fill="none" stroke="#55616d" stroke-width="3"  marker-end="url(#m0)"/>
+<path d="M1815.0,300 V330 H1165 V430 H1005.0 V460" fill="none" stroke="#b3261e" stroke-width="3" stroke-dasharray='9 7' marker-end="url(#m1)"/>
+</svg>
+<div class="bl" style="top:120px;color:#1f6fb2">① INGESTA — se ejecuta al cargar un archivo (y al reindexar)</div>
+<div class="bl" style="top:426px;color:#b3261e">② CONSULTA — reporte inteligente con RAG (por cédula o por ubicación)</div>
+<div class="bl" style="top:768px;color:#1d7a46">③ ACTA DE CONSTATACIÓN — cifras deterministas; el RAG aporta las novedades y la norma</div>
+<div class="box" style="--c:#8a5200;left:40px;top:160px;width:220px;height:140px"><b>Archivo de eSByE</b><pre>CSV · XLSX · PDF con texto
+matriz institucional o
+documento de un funcionario</pre></div>
+<div class="box" style="--c:#1f6fb2;left:310px;top:160px;width:310px;height:140px"><b>Adapter · esbye.py</b><pre>alias de columnas · números y fechas
+rechazos · alcance (institucional|parcial)
+pdf_loader: pdfplumber (tablas + cabecera)</pre></div>
+<div class="box" style="--c:#1d7a46;left:670px;top:160px;width:250px;height:140px"><b>SQLite</b><pre>cortes · bienes (por corte)
+personal · actas · informes
+valores tal como vienen de eSByE</pre></div>
+<div class="box" style="--c:#7b3fa0;left:970px;top:160px;width:300px;height:140px"><b>Chunking</b><pre>1 bien = 1 fragmento (sin nombre
+del custodio) con metadatos
+1 sección de norma = 1 fragmento</pre></div>
+<div class="box" style="--c:#7b3fa0;left:1320px;top:160px;width:300px;height:140px"><b>Embedder · Strategy</b><pre>Hashing de n-gramas (1024 d, léxico)
+o Ollama nomic-embed-text (semántico)
+Factory con respaldo automático</pre></div>
+<div class="box" style="--c:#b3261e;left:1670px;top:160px;width:290px;height:140px"><b>VectorStore · Strategy</b><pre>ChromaDB persistente (coseno)
+o memoria NumPy · metadatos:
+tipo, corte_id, cédula, ubicación</pre></div>
+<div class="box" style="--c:#1d7a46;left:670px;top:322px;width:250px;height:66px"><b>cortes.comparar()</b><pre>altas · bajas · traspasos</pre></div>
+<div class="box" style="--c:#8a5200;left:40px;top:470px;width:230px;height:170px"><b>SPA (HTML + JS)</b><pre>Reporte inteligente:
+ámbito = cédula | ubicación
+tipo de reporte o pregunta libre
+chips de cita → evidencia</pre></div>
+<div class="box" style="--c:#1f6fb2;left:310px;top:470px;width:210px;height:170px"><b>API REST · FastAPI</b><pre>POST /api/informes
+GET  /api/informes/{id}
+GET  …/docx
+GET  /api/rag/estado</pre></div>
+<div class="box" style="--c:#1d7a46;left:560px;top:460px;width:250px;height:115px"><div class="num">1</div><b>Resolver ámbito</b><pre>cédula → corte que la contiene
+ubicación (+custodio) → corte
+lee los bienes de SQLite</pre></div>
+<div class="box" style="--c:#1d7a46;left:560px;top:595px;width:250px;height:125px"><div class="num">2</div><b>Totales (código)</b><pre>Σ valor contable · Σ dep. acum.
+valor en libros · por estado
+críticos · tot. depreciados</pre></div>
+<div class="box" style="--c:#b3261e;left:850px;top:460px;width:310px;height:250px"><div class="num">3</div><b>Retriever híbrido</b><pre>1) filtro obligatorio por metadatos
+    {corte_id, cédula | ubicación}
+2) similitud coseno en la base vectorial
+3) reglas de negocio (crítico, depreciado)
+score = .55 sem. + .35 regla + .10 cód.
+los críticos siempre entran al contexto
++ normativa (tipo = norma, top-k)</pre></div>
+<div class="box" style="--c:#7b3fa0;left:1200px;top:460px;width:270px;height:115px"><div class="num">4</div><b>PromptBuilder</b><pre>reglas anti-alucinación
+DATOS VERIFICADOS + contexto
+con códigos citables [ESP-…]</pre></div>
+<div class="box" style="--c:#7b3fa0;left:1200px;top:595px;width:270px;height:125px"><div class="num">5</div><b>LLMProvider · Strategy</b><pre>plantilla | Ollama | Anthropic | OpenAI
+nube: sin nombre; cédula enmascarada</pre></div>
+<div class="box" style="--c:#b3261e;left:1520px;top:460px;width:270px;height:115px"><div class="num">6</div><b>Validator</b><pre>citas ∈ contexto
+cifras ∈ montos permitidos
+críticos mencionados</pre></div>
+<div class="box" style="--c:#b3261e;left:1520px;top:595px;width:270px;height:115px"><div class="num">7</div><b>Reintento → respaldo</b><pre>si RECHAZADO: corrige y reintenta
+si persiste: plantilla determinista</pre></div>
+<div class="box" style="--c:#1d7a46;left:1830px;top:460px;width:130px;height:250px"><div class="num">8</div><b>Salida</b><pre>texto
++ cifras
++ evidencias
++ validación
++ traza
+→ tabla informes
+→ Word</pre></div>
+<div class="box" style="--c:#8a5200;left:40px;top:830px;width:230px;height:160px"><b>SPA · Acta</b><pre>ubicación · custodio
+analista · coordinación
+fecha · N.° · novedades
+modo manual</pre></div>
+<div class="box" style="--c:#1f6fb2;left:310px;top:830px;width:320px;height:160px"><b>ActaService · Facade</b><pre>armar(): cifras de la matriz (Σ) o
+manuales · advertencias (corte antiguo,
+valores distintos, custodio ausente)
+emitir(): N.° secuencial único</pre></div>
+<div class="box" style="--c:#7b3fa0;left:690px;top:826px;width:290px;height:90px"><b>redactor · Strategy</b><pre>novedades: plantilla | Ollama
+(se descarta si altera códigos)</pre></div>
+<div class="box" style="--c:#b3261e;left:690px;top:926px;width:290px;height:86px"><b>normativa.orientar()</b><pre>consulta vectorial tipo = norma
+según el tipo de novedad</pre></div>
+<div class="box" style="--c:#1d7a46;left:1040px;top:830px;width:300px;height:160px"><b>documento.py</b><pre>Acta .docx: texto fijo, logo, firmas
+Anexo .xlsx: bienes verificados,
+Σ con fórmulas y novedades</pre></div>
+<div class="box" style="--c:#1d7a46;left:1400px;top:830px;width:260px;height:160px"><b>SQLite · actas</b><pre>N.° AAAA-secuencia único
+estructura JSON del acta
+estado: emitida | anulada</pre></div>
+<div class="band" style="top:1050px;height:250px"></div>
+<div class="lg" style="left:40px;top:1064px;width:560px"><b style="font-size:20px">Patrones de diseño</b><br>
+<b>Adapter</b> esbye.py (archivo → dominio) · <b>Facade</b> InformeService, ActaService · <b>Strategy</b> Embedder, VectorStore, LLMProvider, redactor ·
+<b>Factory</b> crear_embedder, crear_store, crear_llm · <b>Builder</b> PromptBuilder · <b>Singleton</b> Settings, Indice · <b>Repository</b> db.py / cortes.py</div>
+<div class="lg" style="left:640px;top:1064px;width:640px"><b style="font-size:20px">Controles anti-alucinación y de datos</b><br>
+• Las cifras las calcula el código; el modelo solo redacta · • Cada afirmación cita [código] y se valida contra el contexto ·
+• Filtro por cédula/ubicación antes de la búsqueda vectorial (no se mezclan custodios) · • Reintento y respaldo determinista ·
+• Los fragmentos no llevan el nombre del custodio; con LLM en la nube se omite el nombre y se enmascara la cédula</div>
+<div class="lg" style="left:1320px;top:1064px;width:640px"><b style="font-size:20px">Despliegue y calidad</b><br>
+• Local: Windows 10/11, Python 3.10+, ChromaDB persistente en data/index · • Sin modelos: modo plantilla + embeddings léxicos ·
+• Con Ollama: llama3.1:8b + nomic-embed-text (≈16 GB RAM) · • 30 pruebas pytest (API, RAG, PDF, Word/Excel) ·
+• Pendiente para producción: SSO, roles, auditoría, PostgreSQL, firma electrónica</div>
+<div class="lg" style="left:40px;top:1235px;font-size:17px"><b>Leyenda:</b> &nbsp;<span style="color:#55616d">▬▶ flujo de datos</span> &nbsp; <span style="color:#b3261e">╌▶ consulta vectorial</span> &nbsp; · &nbsp; borde rojo = RAG · morado = IA/embeddings · verde = datos y cálculo determinista · azul = aplicación</div>
+</body></html>
